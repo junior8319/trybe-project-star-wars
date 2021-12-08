@@ -1,29 +1,16 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext } from 'react';
 import StarWarsContext from '../context/StarWarsContext';
+import Header from './Header';
 
 function Table() {
-  const { data } = useContext(StarWarsContext);
-  const [filter, setFilter] = useState([]);
-
-  const handleChange = ({ target: { value } }) => {
-    setFilter(value);
-  };
+  const { filteredByName } = useContext(StarWarsContext);
 
   return (
     <main>
-      <h1>Star Wars Planets</h1>
-      <div>
-        <label htmlFor="name-filter">
-          Filtrar por nome:
-          <input
-            data-testid="name-filter"
-            id="name-filter"
-            type="text"
-            onChange={ handleChange }
-            value={ filter }
-          />
-        </label>
-      </div>
+      <header>
+        <h1>Star Wars Planets</h1>
+        <Header />
+      </header>
       <table>
         <thead>
           <tr>
@@ -43,23 +30,22 @@ function Table() {
           </tr>
         </thead>
         <tbody>
-          {data && data.filter((element) => element.name.includes(filter))
-            .map((planet) => (
-              <tr key={ planet.name }>
-                <td key={ planet.name }>{ planet.name }</td>
-                <td key={ planet.rotation_period }>{ planet.rotation_period }</td>
-                <td key={ planet.orbital_period }>{ planet.orbital_period }</td>
-                <td key={ planet.diameter }>{ planet.diameter }</td>
-                <td key={ planet.climate }>{ planet.climate }</td>
-                <td key={ planet.gravity }>{ planet.gravity }</td>
-                <td key={ planet.terrain }>{ planet.terrain }</td>
-                <td key={ planet.surface_water }>{ planet.surface_water }</td>
-                <td key={ planet.population }>{ planet.population }</td>
-                <td key={ planet.films }>{ planet.films.map((film) => film) }</td>
-                <td key={ planet.created }>{ planet.created }</td>
-                <td key={ planet.url }>{ planet.url }</td>
-              </tr>
-            ))}
+          {filteredByName && filteredByName.map((planet) => (
+            <tr key={ planet.name }>
+              <td key={ planet.name }>{ planet.name }</td>
+              <td key={ planet.rotation_period }>{ planet.rotation_period }</td>
+              <td key={ planet.orbital_period }>{ planet.orbital_period }</td>
+              <td key={ planet.diameter }>{ planet.diameter }</td>
+              <td key={ planet.climate }>{ planet.climate }</td>
+              <td key={ planet.gravity }>{ planet.gravity }</td>
+              <td key={ planet.terrain }>{ planet.terrain }</td>
+              <td key={ planet.surface_water }>{ planet.surface_water }</td>
+              <td key={ planet.population }>{ planet.population }</td>
+              <td key={ planet.films }>{ planet.films.map((film) => film) }</td>
+              <td key={ planet.created }>{ planet.created }</td>
+              <td key={ planet.url }>{ planet.url }</td>
+            </tr>
+          ))}
         </tbody>
       </table>
     </main>

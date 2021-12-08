@@ -5,13 +5,23 @@ import StarWarsContext from './StarWarsContext';
 
 function StarWarsProvider({ children }) {
   const [data, setData] = useState([]);
+  const [filterByName, setFilterByName] = useState([]);
+  const [filterByNumericValues, setFilterByNumericValues] = useState([]);
 
   useEffect(() => {
     fetchStarWarsApi().then((response) => setData(response));
   }, []);
 
+  const filteredByName = data
+    .filter(({ name }) => name.toLowerCase().includes(filterByName));
+
   const contextValue = {
-    data,
+    filterByName,
+    filteredByName,
+    filterByNumericValues,
+    setData,
+    setFilterByName,
+    setFilterByNumericValues,
   };
 
   return (
