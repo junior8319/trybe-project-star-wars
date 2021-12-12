@@ -3,7 +3,7 @@ import StarWarsContext from '../context/StarWarsContext';
 import Header from './Header';
 
 function Table() {
-  const { filteredByName } = useContext(StarWarsContext);
+  const { filteredData } = useContext(StarWarsContext);
 
   return (
     <main>
@@ -30,7 +30,7 @@ function Table() {
           </tr>
         </thead>
         <tbody>
-          {filteredByName && filteredByName.map((planet) => (
+          {filteredData && filteredData.map((planet) => (
             <tr key={ planet.name }>
               <td key={ planet.name }>{ planet.name }</td>
               <td key={ planet.rotation_period }>{ planet.rotation_period }</td>

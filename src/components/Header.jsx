@@ -1,5 +1,6 @@
 import React, { useContext } from 'react';
 import StarWarsContext from '../context/StarWarsContext';
+import NumericFilters from './NumericFilters';
 
 function Header() {
   const {
@@ -18,11 +19,11 @@ function Header() {
   const handleChangeNumericFilters = ({ target: { value, id } }) => {
     setFilterToApply({
       ...filterToApply,
-      [id]:value,
+      [id]: value,
     });
   };
 
-  const applyNewFilter = () => {
+  const addNewFilter = () => {
     setFilterByNumericValues([
       ...filterByNumericValues,
       filterToApply,
@@ -80,11 +81,14 @@ function Header() {
         <button
           data-testid="button-filter"
           type="button"
-          onClick={ applyNewFilter }
+          onClick={ addNewFilter }
         >
           Filtrar
         </button>
       </form>
+      <article>
+        <NumericFilters />
+      </article>
     </section>
 
   );
