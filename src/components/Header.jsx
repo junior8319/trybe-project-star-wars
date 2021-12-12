@@ -12,6 +12,26 @@ function Header() {
     setFilterToApply,
   } = useContext(StarWarsContext);
 
+  let baseFilterColumns = [
+    'population',
+    'orbital_period',
+    'diameter',
+    'rotation_period',
+    'surface_water',
+  ];
+
+  const currentFilterColumns = [];
+
+  if (filterByNumericValues.length > 0) {
+    filterByNumericValues.forEach(({ column }) => {
+      currentFilterColumns.push(column);
+    });
+  }
+  const isNotApplied = (filterColumn) => !currentFilterColumns.includes(filterColumn);
+
+  baseFilterColumns = baseFilterColumns
+    .filter((filterColumn) => isNotApplied(filterColumn));
+
   const handleChange = ({ target: { value } }) => {
     setFilterByName(value);
   };
@@ -52,11 +72,9 @@ function Header() {
           value={ filterToApply.column }
           onChange={ (event) => handleChangeNumericFilters(event) }
         >
-          <option value="population">population</option>
-          <option value="orbital_period">orbital_period</option>
-          <option value="diameter">diameter</option>
-          <option value="rotation_period">rotation_period</option>
-          <option value="surface_water">surface_water</option>
+          {baseFilterColumns.map((column, index) => (
+            <option value={ column } key={ `${index}${column}` }>{column}</option>
+          ))}
         </select>
 
         <select
