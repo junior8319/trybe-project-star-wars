@@ -19,22 +19,23 @@ function StarWarsProvider({ children }) {
 
   let filteredData = data
     .filter(({ name }) => name.toLowerCase().includes(filterByName));
-
-  filterByNumericValues.forEach(({ column, comparison, value }) => {
-    if (comparison === 'maior que') {
-      filteredData = filteredData.filter((planet) => (
-        Number(planet[column]) > Number(value)
-      ));
-    } else if (comparison === 'menor que') {
-      filteredData = filteredData.filter((planet) => (
-        Number(planet[column]) < Number(value)
-      ));
-    } else if (comparison === 'igual a') {
-      filteredData = filteredData.filter((planet) => (
-        Number(planet[column]) === Number(value)
-      ));
-    }
-  });
+  if (filterByNumericValues.length > 0) {
+    filterByNumericValues.forEach(({ column, comparison, value }) => {
+      if (comparison === 'maior que') {
+        filteredData = filteredData.filter((planet) => (
+          Number(planet[column]) > Number(value)
+        ));
+      } else if (comparison === 'menor que') {
+        filteredData = filteredData.filter((planet) => (
+          Number(planet[column]) < Number(value)
+        ));
+      } else if (comparison === 'igual a') {
+        filteredData = filteredData.filter((planet) => (
+          Number(planet[column]) === Number(value)
+        ));
+      }
+    });
+  }
 
   const contextValue = {
     filterByName,
