@@ -20,7 +20,23 @@ function Header() {
     'surface_water',
   ];
 
+  const sortColumns = [
+    'population',
+    'orbital_period',
+    'diameter',
+    'rotation_period',
+    'surface_water',
+  ];
+
   const currentFilterColumns = [];
+
+  const setToNextFilter = () => {
+    setFilterToApply({
+      column: baseFilterColumns[1],
+      comparison: 'maior que',
+      value: 0,
+    });
+  };
 
   if (filterByNumericValues.length > 0) {
     filterByNumericValues.forEach(({ column }) => {
@@ -48,6 +64,7 @@ function Header() {
       ...filterByNumericValues,
       filterToApply,
     ]);
+    setToNextFilter();
   };
 
   return (
@@ -106,6 +123,41 @@ function Header() {
       </form>
       <article>
         <NumericFilters />
+      </article>
+      <article>
+        <select
+          data-testid="column-sort"
+          name="column-sort"
+          id="sort"
+        >
+          {sortColumns.map((column, index) => (
+            <option value={ column } key={ `${index}${column}` }>{ column }</option>
+          ))}
+        </select>
+        <label htmlFor="sort-asc">
+          ASC
+          <input
+            data-testid="column-sort-input-asc"
+            type="radio"
+            name="sort"
+            id="sort-asc"
+          />
+        </label>
+        <label htmlFor="sort-desc">
+          DESC
+          <input
+            data-testid="column-sort-input-desc"
+            type="radio"
+            name="sort"
+            id="sort-desc"
+          />
+        </label>
+        <button
+          data-testid="column-sort-button"
+          type="button"
+        >
+          Ordenar
+        </button>
       </article>
     </section>
 

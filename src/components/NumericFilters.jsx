@@ -5,10 +5,8 @@ function NumericFilters() {
   const { filterByNumericValues, setFilterByNumericValues } = useContext(StarWarsContext);
 
   const removeFilter = async (receivedcolumn) => {
-    console.log(receivedcolumn);
     const newFiltersList = filterByNumericValues
       .filter(({ column }) => column !== receivedcolumn);
-    console.log(newFiltersList);
     await setFilterByNumericValues(newFiltersList);
   };
 
