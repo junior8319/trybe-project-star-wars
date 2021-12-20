@@ -7,9 +7,12 @@ function Header() {
     filterByName,
     filterByNumericValues,
     filterToApply,
+    sortToApply,
     setFilterByNumericValues,
     setFilterByName,
     setFilterToApply,
+    setSortToApply,
+    sendPlanetsToSort,
   } = useContext(StarWarsContext);
 
   let baseFilterColumns = [
@@ -65,6 +68,24 @@ function Header() {
       filterToApply,
     ]);
     setToNextFilter();
+  };
+
+  const handleChangeSortRules = ({ target }) => {
+    setSortToApply({
+      order: {
+        ...sortToApply.order,
+        column: target.value,
+      },
+    });
+  };
+
+  const handleSortRadioClick = ({ value }) => {
+    setSortToApply({
+      order: {
+        ...sortToApply.order,
+        sort: value,
+      },
+    });
   };
 
   return (
@@ -129,6 +150,8 @@ function Header() {
           data-testid="column-sort"
           name="column-sort"
           id="sort"
+          value={ sortToApply.order.column }
+          onChange={ (event) => handleChangeSortRules(event) }
         >
           {sortColumns.map((column, index) => (
             <option value={ column } key={ `${index}${column}` }>{ column }</option>
@@ -140,7 +163,9 @@ function Header() {
             data-testid="column-sort-input-asc"
             type="radio"
             name="sort"
+            value="ASC"
             id="sort-asc"
+            onClick={ ({ target }) => handleSortRadioClick(target) }
           />
         </label>
         <label htmlFor="sort-desc">
@@ -149,12 +174,15 @@ function Header() {
             data-testid="column-sort-input-desc"
             type="radio"
             name="sort"
+            value="DESC"
             id="sort-desc"
+            onClick={ ({ target }) => handleSortRadioClick(target) }
           />
         </label>
         <button
           data-testid="column-sort-button"
           type="button"
+          onClick={ sendPlanetsToSort }
         >
           Ordenar
         </button>

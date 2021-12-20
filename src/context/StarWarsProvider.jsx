@@ -1,5 +1,8 @@
 import PropTypes from 'prop-types';
 import React, { useEffect, useState } from 'react';
+import filterData from '../helpers/filterData';
+import initialSortPlanetsByName from '../helpers/iniTialSortPlanetsByName';
+import sortByUserChoice from '../helpers/sortByUserChoice';
 import fetchStarWarsApi from '../services/fetchStarWarsApi';
 import StarWarsContext from './StarWarsContext';
 
@@ -12,40 +15,45 @@ function StarWarsProvider({ children }) {
     comparison: 'maior que',
     value: 0,
   });
+  const [sortToApply, setSortToApply] = useState({
+    order: {
+      column: 'name',
+      sort: 'ASC',
+    },
+  });
+
+  const getPlanetsOrderedByName = () => {
+    fetchStarWarsApi().then((response) => {
+      initialSortPlanetsByName(response);
+      setData(response);
+      // setFilteredData(generateFilteredData(response));
+    });
+  };
 
   useEffect(() => {
-    fetchStarWarsApi().then((response) => setData(response));
+    getPlanetsOrderedByName();
   }, []);
 
-  let filteredData = data
-    .filter(({ name }) => name.toLowerCase().includes(filterByName));
-  if (filterByNumericValues.length > 0) {
-    filterByNumericValues.forEach(({ column, comparison, value }) => {
-      if (comparison === 'maior que') {
-        filteredData = filteredData.filter((planet) => (
-          Number(planet[column]) > Number(value)
-        ));
-      } else if (comparison === 'menor que') {
-        filteredData = filteredData.filter((planet) => (
-          Number(planet[column]) < Number(value)
-        ));
-      } else if (comparison === 'igual a') {
-        filteredData = filteredData.filter((planet) => (
-          Number(planet[column]) === Number(value)
-        ));
-      }
-    });
-  }
+  useEffect(() => {}, []);
+  let filteredData = filterData(data, filterByName, filterByNumericValues);
+  filteredData = sortByUserChoice(sortToApply, filteredData);
+
+  const sendPlanetsToSort = (/* receivedPlanets */) => {
+    // setFilteredData(sortByUserChoice(sortToApply, receivedPlanets));
+  };
 
   const contextValue = {
     filterByName,
     filteredData,
     filterByNumericValues,
     filterToApply,
+    sortToApply,
     setData,
     setFilterByName,
     setFilterByNumericValues,
     setFilterToApply,
+    setSortToApply,
+    sendPlanetsToSort,
   };
 
   return (
